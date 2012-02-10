@@ -1,0 +1,12 @@
+h1. sftp-example
+
+This project is a small project containing :
+* a client SFTP class using "Jsch":http://www.jcraft.com/jsch library.
+* a unit test class for the previous one embedding a Java sftp server (Mina SSHD).
+* a mini sftpserver ("miniSFTPserver.exe":https://github.com/jpbriend/sftp-example/blob/master/src/main/resources/miniSFTPserver.exe) for use when developing.
+
+See SftpClientTest class to find how to embed a sftp server in your unit tests.
+
+h2. TODO
+
+Complete the SftpClient class with identity Key authorization.
