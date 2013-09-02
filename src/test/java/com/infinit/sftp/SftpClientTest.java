@@ -20,7 +20,6 @@ public class SftpClientTest {
     private SftpClient test;
     
     private String server = "localhost";
-    private int port = 22;
     private String login = "login";
     private String password = "testPassword";
 
@@ -28,7 +27,6 @@ public class SftpClientTest {
     public void setUp() throws IOException {
         // Init sftp server stuff
         sshd = SshServer.setUpDefaultServer();
-        sshd.setPort(port);
         sshd.setPasswordAuthenticator(new MyPasswordAuthenticator());
         sshd.setPublickeyAuthenticator(new MyPublickeyAuthenticator());
         sshd.setKeyPairProvider(new SimpleGeneratorHostKeyProvider());
@@ -40,7 +38,7 @@ public class SftpClientTest {
         // Init tested class
         test = new SftpClient();
         test.setServer(server);
-        test.setPort(port);
+        test.setPort(sshd.getPort());
         test.setLogin(login);
         test.setPassword(password);
 
