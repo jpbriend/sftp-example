@@ -1,11 +1,11 @@
 package com.infinit.sftp;
 
-import org.apache.sshd.SshServer;
+import org.apache.sshd.server.SshServer;
 import org.apache.sshd.common.NamedFactory;
-import org.apache.sshd.server.Command;
-import org.apache.sshd.server.command.ScpCommandFactory;
+import org.apache.sshd.server.command.Command;
+import org.apache.sshd.scp.server.ScpCommandFactory;
 import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider;
-import org.apache.sshd.server.sftp.SftpSubsystem;
+import org.apache.sshd.sftp.server.SftpSubsystemFactory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,6 +14,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class SftpClientTest {
     private SshServer sshd;
@@ -30,7 +31,7 @@ public class SftpClientTest {
         sshd.setPasswordAuthenticator(new MyPasswordAuthenticator());
         sshd.setPublickeyAuthenticator(new MyPublickeyAuthenticator());
         sshd.setKeyPairProvider(new SimpleGeneratorHostKeyProvider());
-        sshd.setSubsystemFactories(Arrays.<NamedFactory<Command>>asList(new SftpSubsystem.Factory()));
+        sshd.setSubsystemFactories(Collections.singletonList((new SftpSubsystemFactory.Builder().build())));
         sshd.setCommandFactory(new ScpCommandFactory());
 
         sshd.start();
@@ -47,7 +48,7 @@ public class SftpClientTest {
     }
 
     @After
-    public void tearDown() throws InterruptedException {
+    public void tearDown() throws IOException, InterruptedException {
         sshd.stop();
 
         // Clean existing files from previous runs
